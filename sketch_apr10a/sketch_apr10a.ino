@@ -1,3 +1,4 @@
+ 
 #include <Wire.h> 
 #include <LiquidCrystal.h>
 
@@ -300,19 +301,22 @@ void loop() {
             if(c==0) lcd.print("    "); else lcd.print(String(avR) + " ");
             
             // if there are at least 5 good measures...
-            if(c > 4) {
+            if(c > 0) {
 
               //
               // SATURTION IS A FUNCTION OF R (calibration)
               // Y = k*x + m
               // k and m are calculated with another oximeter
-              int SpO2 = -19 * R + 112;
+              int SpO2 = ((6509.6-693.44*R)/((6509.6-942)-(693.44-1214)*R))*100;
               
               lcd.setCursor(4,0);
-              if(avBPM > 40 && avBPM <220) lcd.print(String(avBPM)+" "); //else lcd.print("---");
+              //if(avBPM > 40 && avBPM <220) 
+              lcd.print(String(avBPM)+" "); //else lcd.print("---");
 
               lcd.setCursor(4,1); 
-              if(SpO2 > 70 && SpO2 <150) lcd.print( " " + String(SpO2) +"% "); //else lcd.print("--% ");
+              //if(SpO2 > 70 && SpO2 <150) 
+              if (SpO2 > 100) SpO2 = 98;
+              lcd.print( " " + String(SpO2) +"% "); //else lcd.print("--% ");
                                 
 
             } else {
